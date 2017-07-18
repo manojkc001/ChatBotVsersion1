@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace Bot_Application
 {
@@ -56,5 +58,17 @@ namespace Bot_Application
 
             return null;
         }
+
+        private SensitiveDataConfig GetUserSensitiveData(string userId)
+        {
+            var seriliazer = new XmlSerializer(typeof(SensitiveDataConfigCollection));
+            SensitiveDataConfigCollection sensitiveDataConfigCollection;
+            using (var reader = new StreamReader("")) {
+                sensitiveDataConfigCollection = (SensitiveDataConfigCollection)seriliazer.Deserialize(reader);
+            }
+            SensitiveDataConfig sensitiveDataConfig = new SensitiveDataConfig();
+            return sensitiveDataConfig;
+        }
+
     }
 }
