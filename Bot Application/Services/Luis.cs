@@ -16,8 +16,8 @@ namespace Bot_Application.Services
             {
                 const string authKey = "cb7515b8a93749b7bb11f550c899345b";
 
-                 var url = $"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/eed7d7f3-dd95-4cf3-beea-d3c9731bf25e?subscription-key={authKey}&timezoneOffset=0&verbose=true&q={message}";
-				client.DefaultRequestHeaders.Accept.Clear();
+                 var url = $"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/3903e125-d21c-43b5-b9c2-88eaff8e6c53?subscription-key={authKey}&timezoneOffset=0&verbose=true&q={message}";
+                client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                 var response = await client.GetAsync(url);

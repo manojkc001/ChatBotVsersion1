@@ -103,7 +103,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Configuration\SensitiveDataMapping.xml" />
+    <Content Include="Configuration\SensitiveDataMapping.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="default.htm" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
@@ -112,6 +114,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Configuration\CreditCard.cs" />
+    <Compile Include="Configuration\CreditCardTypes.cs" />
+    <Compile Include="Configuration\ICards.cs" />
+    <Compile Include="Configuration\Products.cs" />
     <Compile Include="Configuration\SensitiveDataConfig.cs" />
     <Compile Include="Configuration\SensitiveDataConfigCollection.cs" />
     <Compile Include="Controllers\MessagesController.cs" />

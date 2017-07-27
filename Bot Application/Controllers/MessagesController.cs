@@ -43,6 +43,10 @@ namespace Bot_Application
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
             }
+            else if (message.Type=="bot added to conversation")
+            {
+                //Th
+            }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
                 // Handle add/remove from contact lists
