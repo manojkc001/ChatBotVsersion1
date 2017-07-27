@@ -1,20 +1,11 @@
-﻿<UserConfig>
-  <!--<Users>
-    <user>
-      <Node1></Node1>
-      <Node2></Node2>
-      <Node3></Node3>
-      <Node4></Node4>
-      <Node5></Node5>
-    </user>
-  </Users>-->
+﻿
   <Banking>
     <Products>
       <CreditCard>
         <Classic>
           <Eligibilty> You need to have an Orange Everyday Account with us</Eligibilty>
           <AnnualFee>No Annual Fee</AnnualFee>
-          <InterestRates>For info on Interest rates of Classic visit google.com</InterestRates>
+          <InterestRates>For info on Interest rates of Classic visit https://www.ingdirect.com.au/credit-cards.html </InterestRates>
           <CardLimit>6000</CardLimit>
         </Classic>
         <Platinum>
@@ -41,5 +32,5 @@
     </Products>
 
   </Banking>
-</UserConfig>
+
 
