@@ -120,6 +120,7 @@
     <Compile Include="Configuration\Products.cs" />
     <Compile Include="Configuration\SensitiveDataConfig.cs" />
     <Compile Include="Configuration\SensitiveDataConfigCollection.cs" />
+    <Compile Include="Constant\Constant.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
     <Compile Include="Global.asax.cs">

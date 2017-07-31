@@ -2,17 +2,29 @@
   <Banking>
     <Products>
       <CreditCard>
+        <CustomerCare></CustomerCare>
+        <CardType>Bank offers two type of classic and platinum cards.</CardType>
         <Classic>
           <Eligibilty> You need to have an Orange Everyday Account with us</Eligibilty>
           <AnnualFee>No Annual Fee</AnnualFee>
           <InterestRates>For info on Interest rates of Classic visit https://www.ingdirect.com.au/credit-cards.html </InterestRates>
-          <CardLimit>6000</CardLimit>
+          <CardLimit>3000</CardLimit>
+          <Rewards>Currently there are no rewards/cashback for classic credit card</Rewards>
+          <Apply></Apply>
+          <Cancel></Cancel>
+          <Pin></Pin>
+          <ChangePin></ChangePin>
         </Classic>
         <Platinum>
           <Eligibilty> You need to have an Orange Everyday Account with us as well as a decent credit score</Eligibilty>
           <AnnualFee>199</AnnualFee>
           <InterestRates>For info on Interest rates of Platinum visit google.com</InterestRates>
-          <CardLimit>9000</CardLimit>
+          <CardLimit>6000</CardLimit>
+          <Rewards>You can get upto 1% cashback maximum upto 30 AUD for platinum credit card.</Rewards>
+          <Apply></Apply>
+          <Cancel></Cancel>
+          <Pin></Pin>
+          <ChangePin></ChangePin>
         </Platinum>
       </CreditCard>
       <Savings>

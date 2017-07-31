@@ -4,6 +4,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -36,197 +37,233 @@ namespace Bot_Application.Dialogs
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
 
         {
-
             var activity = await result as Activity;
-
-            
-
-            //    private static async void Response(IDialogContext context, Activity message)
-            //{
-            //  Activity activity = new Activity();
             var response = await Luis.GetResponse(activity.Text);
-
             if (response != null)
             {
                 List<string> entities = new List<string>();
-
                 foreach (var item in response.entities)
                 {
-                    entities.Add(item.type);
+                    entities.Add(item.entity);
                 }
-                string combindedentity = string.Join(",", entities);
-                if (combindedentity.Contains("CCInformation") || combindedentity.Contains("CreditCard"))
+                var matchedTag = FindXmlConfigurationMatchingNode(entities);
+
+                // Later to remove if else else if
+                if (matchedTag.Classic)
                 {
-                    var Creditcardsinfo = ReturnAvailableCards("CreditCard");
+                    var infoToUser = CreditCardDetails(Constant.Classic); 
+                    if (matchedTag.Benefits || matchedTag.Rewards)
+                    { await context.PostAsync($"{infoToUser.ClassicCard.ClassicInformation.Rewards}"); }
+                    else if (matchedTag.Eligibility)
+                    { await context.PostAsync($"{infoToUser.ClassicCard.ClassicInformation.Eligibility}"); }
+                    else if (matchedTag.InterestRate)
+                    { await context.PostAsync($"{infoToUser.ClassicCard.ClassicInformation.InterestRatesForCards}"); }
+                    else if (matchedTag.Fee)
+                    { await context.PostAsync($"{infoToUser.ClassicCard.ClassicInformation.Fee}"); }
+                    else if (matchedTag.Features || matchedTag.CreditCard)
+                    { await context.PostAsync($"Hello, Classic card has the following features - \n\nAnnual Fees - {infoToUser.ClassicCard.ClassicInformation.AnnualFees} \n\n CardLimit is {infoToUser.ClassicCard.ClassicInformation.CardLimit} AUD \n\n To be eligible {infoToUser.ClassicCard.ClassicInformation.Eligibility} \n\n {infoToUser.ClassicCard.ClassicInformation.InterestRatesForCards}"); }
+                    else if (matchedTag.CreditLimit || matchedTag.CardLimit)
+                    { await context.PostAsync($"{infoToUser.ClassicCard.ClassicInformation.CardLimit}"); }
+                }
+                else if (matchedTag.Platinum)
+                {
+                    var infoToUser = CreditCardDetails(Constant.Platinum); 
+                    if (matchedTag.Benefits || matchedTag.Rewards)
+                    { await context.PostAsync($"{infoToUser.PlatinumCard.PlatinumInformation.Rewards}"); }
+                    else if (matchedTag.Eligibility)
+                    { await context.PostAsync($"{infoToUser.PlatinumCard.PlatinumInformation.Eligibility}"); }
+                    else if (matchedTag.InterestRate)
+                    { await context.PostAsync($"{infoToUser.PlatinumCard.PlatinumInformation.InterestRatesForCards}"); }
+                    else if (matchedTag.Fee)
+                    { await context.PostAsync($"{infoToUser.PlatinumCard.PlatinumInformation.Fee}"); }
+                    else if (matchedTag.Features || matchedTag.CreditCard)
+                    { await context.PostAsync($"Hello, Platinum card has the following features - \n\nAnnual Fees - {infoToUser.PlatinumCard.PlatinumInformation.AnnualFees} \n\n CardLimit is {infoToUser.PlatinumCard.PlatinumInformation.CardLimit} AUD \n\n To be eligible {infoToUser.PlatinumCard.PlatinumInformation.Eligibility} \n\n {infoToUser.PlatinumCard.PlatinumInformation.InterestRatesForCards}"); }
+                    else if (matchedTag.CreditLimit || matchedTag.CardLimit)
+                    { await context.PostAsync($"{infoToUser.PlatinumCard.PlatinumInformation.CardLimit}"); }
+                }
+                else if ((matchedTag.CreditCard && matchedTag.CCInformation) || matchedTag.CreditCard)
+                {
+                    var Creditcardsinfo = ReturnAvailableCards(Constant.CreditCard);
                     await context.PostAsync($"Hello,The follwing cards are offered \n\n{Creditcardsinfo} ");
                 }
-                if (combindedentity.Contains("Classic"))
+                else if ((matchedTag.Rewards && matchedTag.CreditCard) || (matchedTag.Benefits && matchedTag.CreditCard))
                 {
-                    var InfoToUser = ReturnInfoForClassic("Classic");
-
-                    if (combindedentity.Contains("rewards"))
-                    {
-                        await context.PostAsync($"Hello,Currently there are no rewards on Classic. Opt Platinum card for rewards.");
-                    }
-                    else if (combindedentity.Contains("eligibility"))
-                    {
-                        await context.PostAsync($"Hello,To be eligible for a Classic Card {InfoToUser.ClassicInformation.Eligibility} ");
-                    }
-                    else if (combindedentity.Contains("credit limit"))
-                    {
-                        await context.PostAsync($"Hello,The credit limit for a Classic Card is {InfoToUser.ClassicInformation.CardLimit} ");
-                    }
-                    else if (combindedentity.Contains("interestrate"))
-                    {
-                        await context.PostAsync($"Hello, {InfoToUser.ClassicInformation.InterestRatesForCards} ");
-                    }
-                    else if (combindedentity.Contains("fee"))
-                    {
-                        await context.PostAsync($"Hello,We are happy to tell you that  Classic card has {InfoToUser.ClassicInformation.AnnualFees} ");
-                    }
-                    else if (combindedentity.Contains("features") || combindedentity.Contains("credit card"))
-                    {
-                        await context.PostAsync($"Hello, Classic card has the following features - \n\nAnnual Fees - {InfoToUser.ClassicInformation.AnnualFees} \n\n CardLimit is {InfoToUser.ClassicInformation.CardLimit} AUD \n\n To be eligible {InfoToUser.ClassicInformation.Eligibility} \n\n {InfoToUser.ClassicInformation.InterestRatesForCards}");
-                    }
-
+                    var infoToUser = CreditCardDetails(Constant.Platinum);  
+                    await context.PostAsync($"{infoToUser.PlatinumCard.PlatinumInformation.Rewards}");
                 }
-                if (combindedentity.Contains("Platinum"))
-                {
-                    var InfoToUser = ReturnInfoForPlatinum("Platinum");
-                    if (combindedentity.Contains("rewards") || combindedentity.Contains("benefits"))
-                    {
-                        await context.PostAsync($"Hello, You can get upto 1% cashback maximum upto 30 AUD.");
-                    }
-
-                   else if (combindedentity.Contains("features")|| combindedentity.Contains("credit card"))
-                    {
-                        await context.PostAsync($"Hello, Platinum card has the following features - \n\nAnnual Fees - {InfoToUser.PlatinumInformation.AnnualFees} \n\n CardLimit is {InfoToUser.PlatinumInformation.CardLimit} AUD \n\n To be eligible {InfoToUser.PlatinumInformation.Eligibility} \n\n {InfoToUser.PlatinumInformation.InterestRatesForCards}");
-                    }
-                    else if (combindedentity.Contains("eligibility"))
-                    {
-                        await context.PostAsync($"Hello,To be eligible for a Platinum Card {InfoToUser.PlatinumInformation.Eligibility} ");
-                    }
-                    else if (combindedentity.Contains("credit limit"))
-                    {
-                        await context.PostAsync($"Hello,The credit limit for a Platinum Card is {InfoToUser.PlatinumInformation.CardLimit} AUD ");
-                    }
-                    else if (combindedentity.Contains("interestrate"))
-                    {
-                        await context.PostAsync($"Hello, {InfoToUser.PlatinumInformation.InterestRatesForCards} ");
-                    }
-                    else if (combindedentity.Contains("fee"))
-                    {
-                        await context.PostAsync($"Hello,Platinum card has an Annual fee of {InfoToUser.PlatinumInformation.AnnualFees} AUD");
-                    }
-                    
-                }
-
-                //switch (item.type)
-                //{
-
-                //    case "electronics":
-                //        available = item.entity;
-                //        product = item.entity;
-                //        productType = item.type;
-                //        break;
-                //    case "classic features":
-                //        productType = item.type;
-                //        //("Classic");
-                //        break;
-
-                //    case "CCInformation":
-                //        available = "CreditCard";
-                //        List<string> CardsOffered = new List<string>();
-                //        CardsOffered = ReturnAvailableCards(available);
-                //        string combindedString = string.Join(",", CardsOffered.ToArray());
-
-                //        //ReturnAvailbleCards()
-                //        break;
-                //}
-
-
-                //if (!string.IsNullOrEmpty(product))
-                //{
-                //    if (!string.IsNullOrEmpty(available))
-                //        // return our reply to the user
-                //        await context.PostAsync($"Hello, {product} available in category type {productType}");
-                //    // resposta = message.CreateReplyMessage($"OK! Entendi, mostrando {agendaInf} de {pessoa}");
-                //    else
-                //        await context.PostAsync($"Hello, Its not available.");
-                //    //resposta = message.CreateReplyMessage("Not available for " + pessoa + ".");
-                //}
-                //else
-                //    await context.PostAsync($"No result found");
-
 
             }
 
         }
 
+        // This needs to be taken out and use CardType from xml
         public string ReturnAvailableCards(string entity)
         {
             List<string> AvailableCards = new List<string>();
-            var xdoc = XDocument.Load("C:\\Path\\SensitiveDataMapping.xml");
+            var xdoc = LoadXmlConfiguration();
             var NodesCollection = xdoc.Descendants(entity).First().Elements().Descendants().ToList();
             foreach (var node in NodesCollection)
             {
                 if (!AvailableCards.Contains(node.Parent.Name.LocalName))
                     AvailableCards.Add(node.Parent.Name.LocalName);
-               
+
             }
             string combindedString = string.Join(",", AvailableCards);
             return combindedString;
         }
-
+        /*
         public Platinum ReturnInfoForPlatinum(string entity, string compositeentity = "")
         {
-            Platinum platinumcard = new Platinum();
-            InfoForCards platinum = new InfoForCards();
-            
-            var xdoc = XDocument.Load("C:\\Path\\SensitiveDataMapping.xml");
-            var platinumFeatures = from elements in xdoc.Descendants("Platinum")
-                                   select new InfoForCards
-                                   {
-                                       AnnualFees = (string)elements.Element("AnnualFee"),
-                                       Eligibility = (string)elements.Element("Eligibilty"),
-                                       CardLimit = (string)elements.Element("CardLimit"),
-                                       InterestRatesForCards = (string)elements.Element("InterestRates")
-                                   };
+            var platinum = new Platinum();
+            var platinumInformation = new CardInformation();
 
-            foreach (var unit in platinumFeatures)
+            var xdoc = LoadXmlConfiguration();
+            var cardInformation = from elements in xdoc.Descendants(entity)
+                                  select new CardInformation
+                                  {
+                                      AnnualFees = (string)elements.Element("AnnualFee"),
+                                      Eligibility = (string)elements.Element("Eligibilty"),
+                                      CardLimit = (string)elements.Element("CardLimit"),
+                                      InterestRatesForCards = (string)elements.Element("InterestRates"),
+                                      Fee = (string)elements.Element("AnnualFee"),
+                                      Rewards = (string)elements.Element("Rewards")
+                                  };
+
+            foreach (var platinumInfo in cardInformation)
             {
-                platinum.AnnualFees = unit.AnnualFees.Trim();
-                platinum.Eligibility = unit.Eligibility.Trim();
-                platinum.CardLimit = unit.CardLimit.Trim();
-                platinum.InterestRatesForCards = unit.InterestRatesForCards.Trim();
-                platinumcard.PlatinumInformation = platinum;
+                platinumInformation.AnnualFees = platinumInfo.AnnualFees.Trim();
+                platinumInformation.Eligibility = platinumInfo.Eligibility.Trim();
+                platinumInformation.CardLimit = platinumInfo.CardLimit.Trim();
+                platinumInformation.InterestRatesForCards = platinumInfo.InterestRatesForCards.Trim();
+                platinum.PlatinumInformation = platinumInformation;
             }
-            return platinumcard;
+            return platinum;
         }
         public Classic ReturnInfoForClassic(string entity, string compositeentity = "")
         {
-            Classic classiccard = new Classic();
-            InfoForCards classic = new InfoForCards();
+            var classic = new Classic();
+            var classicInformation = new CardInformation();
 
-            var xdoc = XDocument.Load("C:\\Path\\SensitiveDataMapping.xml");
-            var platinumFeatures = from elements in xdoc.Descendants("Classic")
-                                   select new InfoForCards
+            var xdoc = LoadXmlConfiguration();
+            var cardInformation = from elements in xdoc.Descendants(entity)
+                                  select new CardInformation
+                                  {
+                                      AnnualFees = (string)elements.Element("AnnualFee"),
+                                      Eligibility = (string)elements.Element("Eligibilty"),
+                                      CardLimit = (string)elements.Element("CardLimit"),
+                                      InterestRatesForCards = (string)elements.Element("InterestRates")
+                                  };
+
+            foreach (var classicInfo in cardInformation)
+            {
+                classicInformation.AnnualFees = classicInfo.AnnualFees.Trim();
+                classicInformation.Eligibility = classicInfo.Eligibility.Trim();
+                classicInformation.CardLimit = classicInfo.CardLimit.Trim();
+                classicInformation.InterestRatesForCards = classicInfo.InterestRatesForCards.Trim();
+                classic.ClassicInformation = classicInformation;
+            }
+            return classic;
+        } */
+
+        public CreditCardTypes CreditCardDetails(string entity)
+        {
+            var index = 0;
+            var xdoc = LoadXmlConfiguration();
+            var cardInformation = (from elements in xdoc.Descendants(entity)
+                                   select new CardInformation
                                    {
                                        AnnualFees = (string)elements.Element("AnnualFee"),
                                        Eligibility = (string)elements.Element("Eligibilty"),
                                        CardLimit = (string)elements.Element("CardLimit"),
                                        InterestRatesForCards = (string)elements.Element("InterestRates")
-                                   };
+                                   }).ToList();
+            var creditCard = new CreditCardTypes();
+            if (entity.Equals(Constant.Classic))
+                creditCard = new CreditCardTypes()
+                {
+                    ClassicCard = new Classic()
+                    {
+                        ClassicInformation = new CardInformation()
+                        {
+                            AnnualFees = cardInformation[index].AnnualFees.Trim(),
+                            Eligibility = cardInformation[index].Eligibility.Trim(),
+                            CardLimit = cardInformation[index].CardLimit.Trim(),
+                            InterestRatesForCards = cardInformation[index].InterestRatesForCards.Trim(),
+                        }
+                    }
+                };
 
-            foreach (var unit in platinumFeatures)
+            if (entity.Equals(Constant.Platinum))
             {
-                classic.AnnualFees = unit.AnnualFees.Trim();
-                classic.Eligibility = unit.Eligibility.Trim();
-                classic.CardLimit = unit.CardLimit.Trim();
-                classic.InterestRatesForCards = unit.InterestRatesForCards.Trim();
-                classiccard.ClassicInformation = classic;
+                creditCard = new CreditCardTypes()
+                {
+                    PlatinumCard = new Platinum()
+                    {
+                        PlatinumInformation = new CardInformation()
+                        {
+                            AnnualFees = cardInformation[index].AnnualFees.Trim(),
+                            Eligibility = cardInformation[index].Eligibility.Trim(),
+                            CardLimit = cardInformation[index].CardLimit.Trim(),
+                            InterestRatesForCards = cardInformation[index].InterestRatesForCards.Trim(),
+                        }
+                    }
+                };
             }
-            return classiccard;
+            return creditCard;
         }
+
+        #region private methods
+        private XDocument LoadXmlConfiguration()
+        {
+            var xdoc = XDocument.Load(ConfigurationManager.AppSettings["SensitiveData"]);
+            return xdoc;
+        }
+
+        private TagEntity FindXmlConfigurationMatchingNode(List<string> entities)
+        {
+            var tagEntity = new TagEntity();
+            foreach (var entity in entities)
+            {
+                switch (entity)
+                {
+                    case "CCInformation":
+                        tagEntity.CCInformation = true;
+                        break;
+                    case "CreditCard":
+                    case "Credit Card":
+                    case "credit card":
+                    case "creditcard":
+                        tagEntity.CreditCard = true;
+                        break;
+                    case "Classic":
+                    case "classic":
+                        tagEntity.Classic = true;
+                        break;
+                    case "Platinum":
+                    case "platinum":
+                        tagEntity.Platinum = true;
+                        break;
+                    case "rewards":
+                        tagEntity.Rewards = true;
+                        break;
+                    case "eligibility":
+                        tagEntity.Eligibility = true;
+                        break;
+                    case "interestrate":
+                        tagEntity.InterestRate = true;
+                        break;
+                    case "fee":
+                        tagEntity.Fee = true;
+                        break;
+                    case "features":
+                        tagEntity.Features = true;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return tagEntity;
+        }
+        #endregion
     }
 }
