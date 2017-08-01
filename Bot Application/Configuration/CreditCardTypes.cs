@@ -43,6 +43,7 @@ namespace Bot_Application
         public bool Features { get; set; }
         public bool AnnualFees { get; set; }
         public bool Benefits { get; set; }
+        public bool InfoOnCard { get; set; }
     }
 
 }
