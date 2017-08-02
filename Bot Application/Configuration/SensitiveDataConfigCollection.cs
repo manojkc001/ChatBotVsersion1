@@ -7,11 +7,11 @@ using System.Xml.Serialization;
 namespace Bot_Application
 {
     [Serializable]
-    [XmlRoot("UserConfig")]
+    [XmlRoot("ProductConfig")]
     public class SensitiveDataConfigCollection
     {
-        [XmlArray("Users")]
-        [XmlArrayItem("User",typeof(SensitiveDataConfig))]
+        [XmlArray("Products")]
+        [XmlArrayItem("Product", typeof(SensitiveDataConfig))]
         public List<SensitiveDataConfig> Items { get; set; }
     }
 }

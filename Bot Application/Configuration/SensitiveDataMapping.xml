@@ -1,48 +1,48 @@
-﻿
-  <Banking>
-    <Products>
+﻿<ProductConfig>
+  <Products>
+    <Product>
       <CreditCard>
         <CustomerCare></CustomerCare>
-        <CardType>Bank offers two type of classic and platinum cards.</CardType>
+        <CardType>Bank offers two type of classic and platinum orange one cards.</CardType>
+        <Features>There are two type of cards</Features>
+        <Benefits>Platinum has rewards whereas there are no rewards for classic</Benefits>
+        <Cancel></Cancel>
+        <Apply>For apply on credit card, visit https://www.ingdirect.com.au/credit-cards.html</Apply>
+        <ChangePin></ChangePin>
+        <OrangeOne>Orange One is a credit card product, there are two type of classic and platinum.</OrangeOne>
+        <InterestRates>Credit Card Interest Rate</InterestRates>
+        <AnnualFee>Credit Card Platinum Annual fee: 199 AUD</AnnualFee>
+        <CardLimit>The Card limit for a Classic Card is 3000 AUD and for Platinum Card is 6000 AUD</CardLimit>
+        <Rewards>Classic : no rewards Platinum: Rewards as cash back</Rewards>
         <Classic>
-          <Eligibilty> You need to have an Orange Everyday Account with us</Eligibilty>
-          <AnnualFee>No Annual Fee</AnnualFee>
-          <InterestRates>For info on Interest rates of Classic visit https://www.ingdirect.com.au/credit-cards.html </InterestRates>
-          <CardLimit>3000</CardLimit>
-          <Rewards>Currently there are no rewards/cashback for classic credit card</Rewards>
-          <Apply></Apply>
-          <Cancel></Cancel>
-          <Pin></Pin>
-          <ChangePin></ChangePin>
+          <ClassicInformation>
+            <Eligibility>To be eligible for a Classic Card, You need to have an Orange Everyday Account with us</Eligibility>
+            <AnnualFee>No Annual Fee</AnnualFee>
+            <InterestRates>For info on Interest rates of Classic visit https://www.ingdirect.com.au/credit-cards.html </InterestRates>
+            <CardLimit>The Card limit for a Classic Card is 3000 AUD</CardLimit>
+            <Rewards>Currently there are no rewards/cashback for classic credit card</Rewards>
+            <Apply>xxxxx</Apply>
+            <Cancel>xxxxx</Cancel>
+            <Pin>xxxxx</Pin>
+            <ChangePin>xxxxxx</ChangePin>
+            <Features>classic features</Features>
+          </ClassicInformation>
         </Classic>
         <Platinum>
-          <Eligibilty> You need to have an Orange Everyday Account with us as well as a decent credit score</Eligibilty>
-          <AnnualFee>199</AnnualFee>
-          <InterestRates>For info on Interest rates of Platinum visit google.com</InterestRates>
-          <CardLimit>6000</CardLimit>
-          <Rewards>You can get upto 1% cashback maximum upto 30 AUD for platinum credit card.</Rewards>
-          <Apply></Apply>
-          <Cancel></Cancel>
-          <Pin></Pin>
-          <ChangePin></ChangePin>
+          <PlatinumInformation>
+            <Eligibility> You need to have an Orange Everyday Account with us as well as a decent credit score</Eligibility>
+            <AnnualFee>Platinum has an annual fee of 199 AUD</AnnualFee>
+            <InterestRates>For info on Interest rates of Platinum visit google.com</InterestRates>
+            <CardLimit>The Card limit for a Platinum Card is 6000 AUD</CardLimit>
+            <Rewards>You can get upto 1% cashback maximum upto 30 AUD for platinum credit card.</Rewards>
+            <Apply>xxxxx</Apply>
+            <Cancel>xxxxx</Cancel>
+            <Pin>xxxxx</Pin>
+            <ChangePin>xxxxx</ChangePin>
+            <Features>Platinum features</Features>
+          </PlatinumInformation>
         </Platinum>
       </CreditCard>
-      <Savings>
-        <OrangeEveryday>
-          <Eligibilty></Eligibilty>
-          <AnnualFee></AnnualFee>
-          <InterestRates></InterestRates>
-          <CardLimit></CardLimit>
-        </OrangeEveryday>
-        <SavingsMaximiser>
-          <Eligibilty></Eligibilty>
-          <AnnualFee></AnnualFee>
-          <InterestRates></InterestRates>
-          <CardLimit></CardLimit>
-        </SavingsMaximiser>
-      </Savings>
-    </Products>
-
-  </Banking>
-
-
+    </Product>
+  </Products>
+</ProductConfig>

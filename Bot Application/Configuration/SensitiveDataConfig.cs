@@ -9,20 +9,7 @@ namespace Bot_Application
     [Serializable()]
     public class SensitiveDataConfig
     {
-        [XmlElement("Node1")]
-        public string Node1 { get; set; }
-
-        [XmlElement("Node2")]
-        public string Node2 { get; set; }
-
-        [XmlElement("Node3")]
-        public string Node3 { get; set; }
-
-        [XmlElement("Node4")]
-        public string Node4 { get; set; }
-
-        [XmlElement("Node5")]
-        public string Node5 { get; set; }
-
+        [XmlElement("CreditCard")]
+        public CreditCard CreditCard { get; set; }
     }
 }

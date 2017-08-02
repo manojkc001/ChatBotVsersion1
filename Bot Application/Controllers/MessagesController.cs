@@ -32,6 +32,7 @@ namespace Bot_Application
 
         private Activity HandleSystemMessage(Activity message)
         {
+            //GetUserSensitiveData();
             if (message.Type == ActivityTypes.DeleteUserData)
             {
                 // Implement user deletion here
@@ -63,11 +64,12 @@ namespace Bot_Application
             return null;
         }
 
-        private SensitiveDataConfig GetUserSensitiveData(string userId)
+        private SensitiveDataConfig GetUserSensitiveData(string userId = "")
         {
+            
             var seriliazer = new XmlSerializer(typeof(SensitiveDataConfigCollection));
             SensitiveDataConfigCollection sensitiveDataConfigCollection;
-            using (var reader = new StreamReader("")) {
+            using (var reader = new StreamReader("C:\\Users\\manochaudhary\\Documents\\Visual Studio 2017\\Projects\\Bot Application\\02-08-2017\\ChatBotVsersion1\\Bot Application\\Configuration\\InterestRateConfig.xml")) {
                 sensitiveDataConfigCollection = (SensitiveDataConfigCollection)seriliazer.Deserialize(reader);
             }
             SensitiveDataConfig sensitiveDataConfig = new SensitiveDataConfig();

@@ -20,12 +20,16 @@ namespace Bot_Application
     }
     public class CardInformation
     {
-        public string AnnualFees { get; set; }
         public string Eligibility { get; set; }
-        public string InterestRatesForCards { get; set; }
+        public string AnnualFee { get; set; }
+        public string InterestRates { get; set; }
         public string CardLimit { get; set; }
         public string Rewards { get; set; }
-        public string Fee { get; set; }
+        public string Apply { get; set; }
+        public string Cancel { get; set; }
+        public string Pin { get; set; }
+        public string ChangePin { get; set; }
+        public string Features { get; set; }
     }
     public class TagEntity
     {
